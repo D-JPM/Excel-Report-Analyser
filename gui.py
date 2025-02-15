@@ -6,6 +6,9 @@ from customtkinter import CTkLabel, CTkScrollableFrame, CTkButton
 import tkinter.font as tkFont
 from tkinter import Tk, Label, messagebox, Scrollbar, Canvas, Frame, Toplevel
 
+# Image prcoessing 
+from PIL import Image, ImageTk 
+
 # System utilities
 import os
 import sys
