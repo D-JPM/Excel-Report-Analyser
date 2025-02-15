@@ -90,4 +90,29 @@ quit_button.place(relx=0.5, rely=0.6, anchor="center")
 
 print("Widgets added successfully!") # Console check.
 
+# Adding Logo to the top
+logo_image = ctk.CTkImage(
+    light_image=Image.open("image/OFH_LOGO.jpg"),
+    size=(70, 70)
+)
+logo_label = ctk.CTkLabel(
+    title_bar, 
+    image=logo_image, 
+    text=""
+)
+logo_label.pack(side="left", padx=10)  # Place logo on the left of the title bar        
+
+title_label = ctk.CTkLabel(
+    title_bar, 
+    text="Report Analyser",
+    fg_color=None, 
+    text_color="#172264", 
+    font=("geneva", 20)
+)
+title_label.pack(side="left", padx=10)
+
+# Linking the drag event to the Title bar
+title_bar.bind("<B1-Motion>", move_window)
+
 root.mainloop()
+print("Mainloop is running!") # Console check.
