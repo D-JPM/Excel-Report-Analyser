@@ -35,5 +35,3 @@ def analyse_data(data):
 
     site_name_counts = data["SITE NAME"].value_counts()
     print(f"Site Name Counts:\n{site_name_counts}") # Console check.
-
-    
