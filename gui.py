@@ -86,3 +86,5 @@ load_button.place(relx=0.5, rely=0.4, anchor="center")
 quit_button.place(relx=0.5, rely=0.6, anchor="center")
 
 print("Widgets added successfully!") # Console check.
+
+root.mainloop()
