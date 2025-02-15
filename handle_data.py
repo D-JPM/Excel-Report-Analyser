@@ -29,4 +29,11 @@ def load_data(): # Left empty as files will be chosen dynamically.
         return None, None
     
 def analyse_data(data):
+    if data is None or data.empty: # Check if the dataset is empty or not.
+        return None # Exit the function if the ds is empty.
+    print("Running data analysis....") # Console check.
+
+    site_name_counts = data["SITE NAME"].value_counts()
+    print(f"Site Name Counts:\n{site_name_counts}") # Console check.
+
     
