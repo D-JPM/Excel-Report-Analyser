@@ -14,7 +14,7 @@ import os
 import sys
 
 # handle_data script
-# from handle_data import load_data
+from handle_data import load_data, analyse_data
 
 
 print("Starting GUI Setup...") # Console check.
@@ -58,6 +58,82 @@ status_label.pack(side="bottom", pady=10) # location.
 results_label = Label(root, text="", font=("Geneva", 12)) # Whatever the name of the doc will be shown, letting the user know what doc they have laoded.
 results_label.pack()
 
+def handle_load_report():
+    global loaded_data
+    root.withdraw() # Hide the main window when selecting file
+    filename, loaded_data = load_data()
+    if filename:
+        status_label.configure(text=f"{os.path.basename(filename)} Loaded", fg="#0caf22")
+        try:
+            print("Running data analysis...") # Console check.
+            analysis_summary = analyse_data(loaded_data)
+            print(f"Analysis Complete: {analysis_summary}") # Console check.
+
+            # Open a new window for displaying results
+            open_analysis_window(analysis_summary)
+
+        except Exception as e:
+            import traceback
+            error_details = traceback.format_exc()
+            messagebox.showerror("Analysis has Failed", f"An error occurred while analysing the file: {e}")
+    else:
+        status_label.configure(text="No file loaded", fg="#ff0004")
+    root.deiconify()  
+
+def open_analysis_window(analysis_summary):
+    # Create 'analysis_window'
+    analysis_window = Toplevel(root)
+    analysis_window.title("Analysis Results")  # Print Notification
+    analysis_window.geometry("500x800")  # Size
+
+    title_font = ("Geneva", 18, "bold")  # Bold font for titles
+    data_font = ("Univers", 16)          # Font for regular data
+
+    # Add a scrollable text widget
+    scrollable_frame = CTkScrollableFrame(analysis_window, width=480, height=360)
+    scrollable_frame.pack(padx=10, pady=10, fill="both", expand=True)
+
+# Order and Titles Mapping
+    display_order = [
+        ("Site Count", "site_counts"),
+        ("Success Count", "success_count"),
+        ("Success Percentage", "success_percentage"),
+        ("Fail Count", "fail_count"),
+        ("Fail Percentage", "fail_percentage"),
+        ("Total Jobs", "total_jobs"),
+        ("Driver Job Count", "driver_job_counts"),
+        ("On Time Count", "on_time_counts"),
+        ("Collection Window Count", "collection_window_counts")
+    ]
+    
+    # Loop through the display order directly
+    for display_title, key in display_order:
+        # Fetch the value corresponding to the current key from the `analysis_summary`
+        value = analysis_summary.get(key)
+        
+        # Check if the value is a nested dictionary
+        if isinstance(value, dict):
+            value = sum(value.values())  # Combine nested dictionary values into a single integer/float
+
+        # Ensure the value is displayable (convert to string if needed)
+        value_display = str(value) if value is not None else "N/A"
+
+        # Create a label for each key-value pair
+        label = CTkLabel(
+            scrollable_frame,
+            text=f"{display_title}: {value_display}",
+            anchor="w",
+            justify="left",
+            font=data_font,  # Use regular font for data
+        )
+        label.pack(anchor="w", padx=10, pady=5)
+
+    # Optionally add a close button to the analysis_window
+    close_button = CTkButton(analysis_window, text="Close", command=analysis_window.destroy)
+    close_button.pack(pady=10)
+
+
+
 # Buttons
 load_button = ctk.CTkButton(
     master=root,
@@ -68,7 +144,7 @@ load_button = ctk.CTkButton(
     hover_color="#042246",  # Slightly darker OFH Blue
     text_color="white",  # White text
     font=("Univers", 18),
-    command=None 
+    command=handle_load_report
 
 )
 

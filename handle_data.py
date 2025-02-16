@@ -1,5 +1,6 @@
 # Imports
 import pandas as pd
+from tkinter import filedialog, messagebox
 import os
 
 from tkinter import filedialog, messagebox
@@ -16,7 +17,7 @@ def load_data(): # Left empty as files will be chosen dynamically.
         return None, None # Return 'None' as no file was loaded.
     
     # File Verification.
-    if not filename.endswith('.xlsx') # Make sure the file does end with .xlsx (extenstion)
+    if not filename.endswith('.xlsx'): # Make sure the file does end with .xlsx (extenstion)
         messagebox.showerror("Invalid File", "The selected file is not an Excel (.xlsx) file!")
         return None, None # Exit if the filetype is invalid.
     # If the filetype is valid....
