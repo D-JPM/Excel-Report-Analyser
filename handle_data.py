@@ -35,3 +35,35 @@ def analyse_data(data):
 
     site_name_counts = data["SITE NAME"].value_counts()
     print(f"Site Name Counts:\n{site_name_counts}") # Console check.
+
+    # Analysing Job success & Failures
+    successful_jobs = data["SUCCESSFUL JOB"].value_counts()
+    total_jobs = len(data)
+    success_count = successful_jobs.get("YES", 0)
+    fail_count = successful_jobs.get("NO", 0)
+    success_percentage = (success_count / total_jobs) * 100 if total_jobs > 0 else 0
+    fail_percentage = (fail_count / total_jobs) * 100 if total_jobs > 0 else 0
+
+     # Driver job completion count
+    driver_job_counts = data["DRIVER NAME"].value_counts()
+
+    # On-Time analysis 
+    on_time_counts = data[data["ON TIME"] == "YES"]["DRIVER NAME"].value_counts() 
+
+    # Collection Window Count
+    collection_window_counts = data["COLLECTION WINDOW"].value_counts()
+
+    # Result Dict
+    summary = {
+        "site_counts": site_name_counts.to_dict(),
+        "success_count": success_count,
+        "fail_count": fail_count,
+        "success_percentage": round(success_percentage, 2),
+        "fail_percentage": round(fail_percentage, 2),
+        "total_jobs": total_jobs,
+        "driver_job_counts": driver_job_counts.to_dict(), 
+        "on_time_counts": on_time_counts.to_dict(),
+        "collection_window_counts": collection_window_counts.to_dict(),
+    }
+
+    return summary
